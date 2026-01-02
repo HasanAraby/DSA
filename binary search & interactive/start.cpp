@@ -14,6 +14,8 @@ string ar[5];
 
 void test()
 {
+	// to dead with interactive problems just after each output => cout << endl << flush; this will send your output to system of contest
+	// or as we use in this snippet of code
 	string inp;
 	int l = 1, r = 1e6, md;
 	while (l <= r)
@@ -40,4 +42,5 @@ int main()
 		test();
 	}
 	return 0;
+
 }
