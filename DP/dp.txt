@@ -1,0 +1,109 @@
+
+
+Same state can be called many times but calculated once
+=======================================================
+
+
+
+
+
+
+
+
+how to write subset sum dp in cpp
+
+
+ChatGPT said:
+Great question! Let's walk through how to write a standard Subset Sum DP in C++ — both the problem, the approach, and a clean implementation.
+
+🧩 Problem: Subset Sum
+Given an array of integers arr[] and an integer target, determine whether there exists a subset whose sum equals target.
+
+🧠 Example
+Input:
+
+cpp
+Copy
+Edit
+arr = {3, 34, 4, 12, 5, 2}
+target = 9
+Output: YES
+(→ Subset {4, 5} sums to 9)
+
+✅ Standard DP Approach
+Key Idea:
+Use a boolean DP table dp[i][j] where:
+
+i is the number of elements considered (0 to n)
+
+j is the target sum (0 to target)
+
+dp[i][j] = true means it's possible to make sum j using the first i elements
+
+⏱️ Time Complexity
+O(n × target)
+Where n = size of array
+
+🧱 C++ Implementation (2D DP)
+cpp
+Copy
+Edit
+#include <bits/stdc++.h>
+using namespace std;
+
+bool subsetSum(vector<int>& arr, int target) {
+    int n = arr.size();
+    vector<vector<bool>> dp(n + 1, vector<bool>(target + 1, false));
+
+    // Base case: sum 0 is always possible with 0 elements
+    for (int i = 0; i <= n; i++) dp[i][0] = true;
+
+    for (int i = 1; i <= n; i++) {
+        for (int sum = 1; sum <= target; sum++) {
+            // Exclude current element
+            dp[i][sum] = dp[i - 1][sum];
+
+            // Include current element if it doesn't exceed sum
+            if (arr[i - 1] <= sum)
+                dp[i][sum] |= dp[i - 1][sum - arr[i - 1]];
+        }
+    }
+
+    return dp[n][target];
+}
+
+int main() {
+    vector<int> arr = {3, 34, 4, 12, 5, 2};
+    int target = 9;
+
+    if (subsetSum(arr, target))
+        cout << "YES\n";
+    else
+        cout << "NO\n";
+
+    return 0;
+}
+🧪 Output
+objectivec
+Copy
+Edit
+YES
+🔄 Optimized Version (1D DP)
+We can optimize the space to O(target):
+
+cpp
+Copy
+Edit
+bool subsetSum(vector<int>& arr, int target) {
+    vector<bool> dp(target + 1, false);
+    dp[0] = true; // base case
+
+    for (int num : arr) {
+        for (int sum = target; sum >= num; sum--) {
+            dp[sum] = dp[sum] || dp[sum - num];
+        }
+    }
+
+    return dp[target];
+}
+This is the version used in many contest problems when space matters
